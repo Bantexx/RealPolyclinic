@@ -1,0 +1,89 @@
+﻿<UserControl x:Class="RealPolyclinic.Views.MakingAppointment"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RealPolyclinic.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+
+        <DataTemplate x:Key="DataTemplate_Level2">
+            <Button Content="{Binding Text}" CommandParameter="{Binding}" Command="{Binding DataContext.doRecord,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}" Height="25" Width="150" Margin="4,4,4,4"/>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="DataTemplate_Textbox">
+            <Border  BorderBrush="Green" BorderThickness="0 0 2 0">
+                <Label Content="{Binding FullName}"></Label>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_Label">
+            <Border BorderBrush="Green" BorderThickness="2">
+                <Label HorizontalAlignment="Right" MaxWidth="40" Height="24" Content="{Binding}"></Label>
+            </Border>
+        </DataTemplate>
+        <DataTemplate x:Key="DataTemplate_Level1">
+            <ItemsControl ItemsSource="{Binding}" ItemTemplate="{DynamicResource DataTemplate_Level2}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </DataTemplate>
+        
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <StackPanel Margin="10 0 0 0" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="2">
+            <Label>Choose specialty doctor:</Label>
+            <ComboBox SelectedItem="{Binding selectedType}" ItemsSource="{Binding typeofDoctors}">
+            </ComboBox>
+            <Button Command="{Binding tryit}">Try it</Button>
+        </StackPanel>
+        <ScrollViewer HorizontalScrollBarVisibility="Hidden" Name="sv2" ScrollChanged="Sv2_ScrollChanged" VerticalScrollBarVisibility="Hidden"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
+            <ListBox Visibility="{Binding ShowElem}" ItemTemplate="{DynamicResource DataTemplate_Textbox}"  Height="55" VerticalAlignment="Bottom"  ItemsSource="{Binding Docs}">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal">
+                        </StackPanel>
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+             </ListBox>
+        </ScrollViewer>
+        <ListBox Visibility="{Binding ShowElem}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemTemplate="{DynamicResource DataTemplate_Label}" IsHitTestVisible="False" Width="53" HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" Grid.RowSpan="4" ItemsSource="{Binding times}">
+
+        </ListBox>
+        <Border Visibility="{Binding ShowElem}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="4" BorderBrush="Green" BorderThickness="1">
+            <ScrollViewer Name="sv1" VerticalScrollBarVisibility="Hidden" ScrollChanged="Sv2_ScrollChanged" HorizontalScrollBarVisibility="Visible">
+                <Grid>
+                    <ItemsControl ItemsSource="{Binding ScheduleTable,UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{DynamicResource DataTemplate_Level1}"/>
+                </Grid>
+            </ScrollViewer>
+        </Border>
+        <Calendar SelectedDate="{Binding SelectedDate}" Visibility="{Binding ShowElem}" Margin="0 30 0 0" Grid.Row="1" Grid.Column="5" Grid.RowSpan="3" Grid.ColumnSpan="2">
+            
+        </Calendar>
+        <TextBlock FontFamily="Times New Roman" HorizontalAlignment="Center" VerticalAlignment="Bottom" Visibility="{Binding ShowElem}" Text="{Binding ShowDataText}" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" FontSize="30">
+            
+        </TextBlock>
+    </Grid>
+</UserControl>

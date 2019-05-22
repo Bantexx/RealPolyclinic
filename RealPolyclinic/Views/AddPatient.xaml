@@ -1,0 +1,87 @@
+﻿<UserControl x:Class="RealPolyclinic.Views.AddPatient"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RealPolyclinic.Views"
+             xmlns:vm="clr-namespace:RealPolyclinic.ViewModels"
+             xmlns:views="clr-namespace:RealPolyclinic.Views"
+             xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="validationFailed">
+            <StackPanel>
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder />
+                </Border>
+                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="16" FontWeight="Light">!</TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid>
+        <StackPanel Margin="20 0 20 0">
+            <Label Content="Имя:"/>
+            <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="SelectedPatient.FirstName" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Фамилия:" />
+            <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="SelectedPatient.SurName" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Отчество:"/>
+            <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="SelectedPatient.Patronymic" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Снилс:"/>
+            <xctk:MaskedTextBox Height="35" FontSize="25" Mask="000-000-000 00" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="SelectedPatient.Snils" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Label Content="Телефон:"/>
+            <xctk:MaskedTextBox Height="35" FontSize="25" Mask="0-(000)-000-00-00" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="SelectedPatient.Telephone" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Button Height="30" Margin="0 30 0 0" Content="Send Data" Command="{Binding addNew}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

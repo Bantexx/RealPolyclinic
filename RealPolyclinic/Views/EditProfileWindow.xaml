@@ -1,0 +1,60 @@
+﻿<Window x:Class="RealPolyclinic.Views.EditProfileWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RealPolyclinic.Views"
+        mc:Ignorable="d"
+        Title="EditProfileWindow" Height="350" Width="500">
+    <Window.Resources>
+        <ControlTemplate x:Key="validationFailed">
+            <StackPanel>
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder />
+                </Border>
+                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="10" FontWeight="Light">!</TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <StackPanel>
+            <Label Content="Имя:"/>
+            <TextBox Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="profpat.FirstName" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Фамилия:" />
+            <TextBox Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="profpat.SurName" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Отчество:"/>
+            <TextBox Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="profpat.Patronymic" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Button Margin="0 15 0 0" Content="Save_changes" Command="{Binding saveprof}"></Button>
+        </StackPanel>
+    </Grid>
+</Window>
