@@ -28,6 +28,8 @@ namespace RealPolyclinic.ViewModels
         }
         public RelayCommand SrchPat { get; set; }
 
+        public string[] typeofParameters { get; set; }
+        public string selectedParam { get; set; }
         private string patforsrch;
         public string PatForSrch
         {
@@ -52,50 +54,65 @@ namespace RealPolyclinic.ViewModels
 
         public SearchPatientVM()
         {
+            selectedParam = "";
+            typeofParameters = new string[] { "Firstname", "Surname", "Policy" };
             ListPatients = new ObservableCollection<Patient>();
-            SrchPat = new RelayCommand(obj => FindPatient());
+            SrchPat = new RelayCommand(obj => FindPatient(selectedParam));
             visibleGrid = "Hidden";
         }
 
-        private void FindPatient()
+        private void FindPatient(string strforsrch)
         {
-            if (!string.IsNullOrEmpty(PatForSrch)&&!string.IsNullOrWhiteSpace(PatForSrch))
+            if (!string.IsNullOrEmpty(strforsrch))
             {
-                visibleGrid = "Visible";
-                ListPatients.Clear();
-                string connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
-                using (SqlConnection connect = new SqlConnection(connectionString))
+                if (!string.IsNullOrEmpty(PatForSrch) && !string.IsNullOrWhiteSpace(PatForSrch))
                 {
-                    connect.Open();
-                    string sqlexp = String.Format("SELECT * FROM Patients WHERE Firstname ='{0}'", PatForSrch);
-                    SqlDataAdapter adapter = new SqlDataAdapter(sqlexp, connect);
-                    DataSet dt = new DataSet();
-                    adapter.Fill(dt);
-                    if (dt.Tables[0].Rows.Count == 0)
+                    visibleGrid = "Visible";
+                    ListPatients.Clear();
+                    string connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
+                    using (SqlConnection connect = new SqlConnection(connectionString))
                     {
-                        PatForSrch = "";
-                        MessageBox.Show("Данные не найдены");                        
-                    }
-                    else
-                    {
-                        foreach (DataRow item in dt.Tables[0].Rows)
+                        connect.Open();
+                        string sqlexp = String.Format("SELECT * FROM Patients WHERE {0} = '{1}'",strforsrch, PatForSrch);
+                        SqlDataAdapter adapter = new SqlDataAdapter(sqlexp, connect);
+                        DataSet dt = new DataSet();
+                        adapter.Fill(dt);
+                        if (dt.Tables[0].Rows.Count == 0)
                         {
-                            ListPatients.Add(new Patient
-                            {
-                                Id = Convert.ToInt32(item[0]),
-                                FirstName = item[1].ToString(),
-                                SurName = item[2].ToString(),
-                                Patronymic = item[3].ToString()
-                            });
+                            PatForSrch = "";
+                            MessageBox.Show("Данные не найдены");
                         }
-                        dt = null;
-                        adapter.Dispose();
+                        else
+                        {
+                            foreach (DataRow item in dt.Tables[0].Rows)
+                            {
+                                ListPatients.Add(new Patient
+                                {
+                                    Id = Convert.ToInt32(item[0]),
+                                    FirstName = item[1].ToString(),
+                                    SurName = item[2].ToString(),
+                                    Patronymic = item[3] == DBNull.Value ? "" : item[3].ToString(),
+                                    Snils=item[4].ToString(),
+                                    Telephone= item[5] == DBNull.Value ? "" : item[5].ToString(),
+                                    Address=item[6]==DBNull.Value?"": item[6].ToString(),
+                                    Id_Card =item[7]== DBNull.Value ? 0 : Convert.ToInt32(item[7]),
+                                    Policy= item[8] == DBNull.Value ? "" : item[8].ToString(),
+                                    Birthday = item[9] == DBNull.Value ? "" : item[9].ToString()
+                                });
+                            }
+                            dt = null;
+                            adapter.Dispose();
+                        }
                     }
+                }
+                else
+                {
+                    MessageBox.Show("Заполните поле для поиска");
                 }
             }
             else
             {
-                MessageBox.Show("Заполните поле для поиска");
+                MessageBox.Show("Выберите тип поиска");
             }
         }
     }

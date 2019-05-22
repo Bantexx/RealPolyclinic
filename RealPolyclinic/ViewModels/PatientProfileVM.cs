@@ -18,6 +18,7 @@ namespace RealPolyclinic.ViewModels
     {
         public ICommand EdProfile { get; set; }
         public ICommand CreateCard { get; set; }
+        public ICommand delProfile { get; set; }
         private Patient _InfoPat;
         public EditProfileWindow epw;
         public Patient InfoPat
@@ -78,6 +79,7 @@ namespace RealPolyclinic.ViewModels
         {
             EdProfile = new RelayCommand(x => CreateNewEditWindow(x));
             CreateCard = new RelayCommand(x =>CreateMedCard());
+            delProfile = new RelayCommand(x => DelPatient(temp));
             SelectById(temp);
             if (InfoPat.Id_Card == 0)
             {
@@ -108,11 +110,16 @@ namespace RealPolyclinic.ViewModels
                     reader.Read();
                     InfoPat = new Patient()
                     {
-                        Id = Convert.ToInt32(reader.GetValue(0)),
-                        FirstName = reader.GetValue(1).ToString(),
-                        SurName = reader.GetValue(2).ToString(),
-                        Patronymic = reader.GetValue(3).ToString(),
-                        Id_Card = reader.GetValue(7)==DBNull.Value ? 0 : Convert.ToInt32(reader.GetValue(7))
+                        Id = reader.GetInt32(0),
+                        FirstName = reader.GetString(1),
+                        SurName = reader.GetString(2),
+                        Patronymic = reader.GetValue(3) == DBNull.Value ? "" : reader.GetString(3),
+                        Snils = reader.GetValue(4) == DBNull.Value ? "" : reader.GetString(4),
+                        Telephone = reader.GetValue(5) == DBNull.Value ? "" : reader.GetString(5),
+                        Address = reader.GetValue(6) == DBNull.Value ? "" : reader.GetString(6),
+                        Id_Card = reader.GetValue(7) == DBNull.Value ? 0 : reader.GetInt32(7),
+                        Policy = reader.GetValue(8) == DBNull.Value ? "" : reader.GetString(8),
+                        Birthday = reader.GetValue(9) == DBNull.Value ? "" : reader.GetDateTime(9).ToString()
                     };
                 }
                 reader.Close();
@@ -122,7 +129,7 @@ namespace RealPolyclinic.ViewModels
         private void CreateNewEditWindow(object prof)
         {
             epw = new EditProfileWindow(prof);
-            epw.ShowDialog();
+            epw.ShowDialog();          
         }
         private void CreateMedCard()
         {
@@ -146,6 +153,40 @@ namespace RealPolyclinic.ViewModels
             WorkWithDb wwd = new WorkWithDb();
             wwd.InsertInDb(query,newmedcard,types);
             wwd.UpdateDb(query1, mc);
+        }
+        private void DelPatient(int id)
+        {
+            var connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                if (InfoPat.Id_Card != 0)
+                {
+                    var query1 = "DELETE FROM Med_Card WHERE Id_Patient=@Pat";
+                    SqlCommand cmd1 = new SqlCommand(query1, connection);
+                    cmd1.Parameters.AddWithValue("@Pat", id);
+                    try
+                    {
+                        cmd1.ExecuteNonQuery();
+                    }
+                    catch (SqlException ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }       
+                var query = "DELETE FROM Patients WHERE Id_Patient=@Pat";
+                SqlCommand cmd = new SqlCommand(query, connection);
+                cmd.Parameters.AddWithValue("@Pat",id);
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Данные успешно удалены");
+                }
+                catch (SqlException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
         }
     }
 }

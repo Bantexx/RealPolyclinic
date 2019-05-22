@@ -27,13 +27,19 @@ namespace RealPolyclinic.ViewModels
         {
             if (profpat.Error == String.Empty)
             {
-                string queryaddPat = "UPDATE Patients SET Firstname=@FN, Surname=@SN,Patronymic=@Pat WHERE Id_Patient=@Id";
+                string queryaddPat = "UPDATE Patients SET Firstname=@FN, Surname=@SN,Patronymic=@Pat" +
+                    ",Snils=@Sni,Telephone=@Tel,Address=@Addr,Policy=@Pol,Birthday=@Birth WHERE Id_Patient=@Id";
                 Dictionary<string, object> dictPat = new Dictionary<string, object>()
                 {
                     {"@FN",profpat.FirstName },
                     {"@SN",profpat.SurName },
                     {"@Pat",profpat.Patronymic },
                     {"@Id",profpat.Id },
+                    {"@Sni",profpat.Snils },
+                    {"@Tel",profpat.Telephone },
+                    {"@Addr",profpat.Address },
+                    {"@Pol",profpat.Policy },
+                    {"@Birth",Convert.ToDateTime(profpat.Birthday)}
                 };
                 WorkWithDb wwd = new WorkWithDb();
                 wwd.UpdateDb(queryaddPat, dictPat);                              

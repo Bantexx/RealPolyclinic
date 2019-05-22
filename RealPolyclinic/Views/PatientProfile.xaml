@@ -13,31 +13,60 @@
             <views:MedCard />
         </DataTemplate>
     </UserControl.Resources>
-    <Grid>
+    <Grid Margin="10">
         <StackPanel>
+            <StackPanel>
             <Button Content="Go back" Command="{Binding DataContext.PreviousPage,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}" ></Button>
         </StackPanel>
-        <StackPanel Margin="0 30 0 0">
-            <Label>Имя:</Label>
-            <TextBlock Text="{Binding InfoPat.FirstName}"/>
-            <Label>Фамилия:</Label>
-            <TextBlock Text="{Binding InfoPat.SurName}"/>
-            <Label>Отчество:</Label>
-            <TextBlock Text="{Binding InfoPat.Patronymic}"/>
+            <StackPanel Margin="0 30 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <Label FontSize="14">Имя:</Label>
+                    <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.FirstName}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label FontSize="14">Фамилия:</Label>
+                    <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.SurName}"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label FontSize="14">Отчество:</Label>
+                    <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.Patronymic}"/>
+                </StackPanel>
+            </StackPanel>
             <WrapPanel Margin="0 0 0 10" Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <Label>Наличие Мед.Карты:</Label>
-                    <TextBlock Text="{Binding Check_Card}"/>
+                    <Label FontSize="14">Наличие Мед.Карты:</Label>
+                    <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding Check_Card}"/>
                 </StackPanel>
                 <Button Visibility="{Binding isVisible}" Content="Create_Med_Card" Command="{Binding CreateCard}"></Button>
             </WrapPanel>
             <Button Content="EditProfile" Command="{Binding EdProfile}" CommandParameter="{Binding InfoPat}"/>
-            <Button Content="DeleteProfile"/>
+            <Button Content="DeleteProfile" Command="{Binding delProfile}"/>
             <Button Content="Refresh" Command="{Binding DataContext.GoToPat,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}" CommandParameter="{Binding InfoPat.Id}"/>
             <StackPanel  Margin="0 15 0 0">
                 <TabControl>
                     <TabItem Header="Personal Info">
-                        <Label>In Process</Label>
+                        <StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label FontSize="14">Снилс:</Label>
+                                <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.Snils}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label FontSize="14">Телефон:</Label>
+                                <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.Telephone}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label FontSize="14">Адрес:</Label>
+                                <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.Address}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label FontSize="14">Полис:</Label>
+                                <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.Policy}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <Label FontSize="14">Дата рождения:</Label>
+                                <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.Birthday}"/>
+                            </StackPanel>
+                        </StackPanel>
                     </TabItem>
                     <TabItem Header="Med Card">
                         <ContentControl Visibility="{Binding VisibleCard}" Content="{Binding ShowMedCard}"></ContentControl>

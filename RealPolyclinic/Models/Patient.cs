@@ -19,7 +19,7 @@ namespace RealPolyclinic.Models
         private string telephone;
         private string address;
         private string policy;
-        private DateTime? birthday;
+        private DateTime birthday;
         private int id_card;
 
         public string this[string columnName]
@@ -90,7 +90,7 @@ namespace RealPolyclinic.Models
                         }
                         break;
                     case "Birthday":
-                        var thidt = birthday.Value.Date;
+                        var thidt = birthday.Date;
                         if (thidt > DateTime.Now.Date||thidt.Year< DateTime.Now.Year-120)
                         {
                             Error += " Эта дата не доступна";
@@ -186,11 +186,17 @@ namespace RealPolyclinic.Models
         }
         public string Birthday
         {
-            get { return birthday.Value.ToString("dd/MM/yyyy"); }
+            get
+            {
+                return birthday.Date.ToString("dd/MM/yyyy");          
+            }
             set
             {
-                 birthday = Convert.ToDateTime(value);
-                 OnPropertyChanged("Birthday");           
+                if (value != "")
+                {
+                    birthday = Convert.ToDateTime(value);
+                }
+                OnPropertyChanged("Birthday");
             }
         }
 

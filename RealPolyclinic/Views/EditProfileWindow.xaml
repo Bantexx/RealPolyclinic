@@ -3,23 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:RealPolyclinic.Views"
         mc:Ignorable="d"
-        Title="EditProfileWindow" Height="350" Width="500">
+        WindowStartupLocation="CenterScreen"
+        Title="EditProfileWindow" Height="600" Width="500">
     <Window.Resources>
         <ControlTemplate x:Key="validationFailed">
             <StackPanel>
                 <Border BorderBrush="Red" BorderThickness="2">
                     <AdornedElementPlaceholder />
                 </Border>
-                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="10" FontWeight="Light">!</TextBlock>
+                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="14" FontWeight="Light">!</TextBlock>
             </StackPanel>
         </ControlTemplate>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="10">
         <StackPanel>
             <Label Content="Имя:"/>
-            <TextBox Validation.ErrorTemplate="{StaticResource validationFailed}">
+            <TextBox Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <TextBox.Text>
                     <Binding Path="profpat.FirstName" Mode="TwoWay" 
                              ValidatesOnExceptions="True" 
@@ -31,7 +33,7 @@
                 </TextBox.Text>
             </TextBox>
             <Label Content="Фамилия:" />
-            <TextBox Validation.ErrorTemplate="{StaticResource validationFailed}">
+            <TextBox Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <TextBox.Text>
                     <Binding Path="profpat.SurName" Mode="TwoWay" 
                              ValidatesOnExceptions="True" 
@@ -43,7 +45,7 @@
                 </TextBox.Text>
             </TextBox>
             <Label Content="Отчество:"/>
-            <TextBox Validation.ErrorTemplate="{StaticResource validationFailed}">
+            <TextBox  Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <TextBox.Text>
                     <Binding Path="profpat.Patronymic" Mode="TwoWay" 
                              ValidatesOnExceptions="True" 
@@ -54,7 +56,67 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <Button Margin="0 15 0 0" Content="Save_changes" Command="{Binding saveprof}"></Button>
+            <Label Content="Снилс:"/>
+            <xctk:MaskedTextBox Height="30" FontSize="20" Mask="000-000-000 00" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="profpat.Snils" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Label Content="Телефон:"/>
+            <xctk:MaskedTextBox Height="30" FontSize="20" Mask="0-(000)-000-00-00" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="profpat.Telephone" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Label Content="Полис:"/>
+            <xctk:MaskedTextBox Height="30" FontSize="20" Mask="0000 0000 0000 0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="profpat.Policy" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Label Content="Адрес:"/>
+            <TextBox Height="30" FontSize="20" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="profpat.Address" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Дата рождения:"/>
+            <xctk:MaskedTextBox Height="30" FontSize="20" Mask="00/00/0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="profpat.Birthday" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Button Margin="0 25 0 0" Content="Save_changes" Command="{Binding saveprof}"></Button>
         </StackPanel>
     </Grid>
 </Window>

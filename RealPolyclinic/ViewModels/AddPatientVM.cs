@@ -27,7 +27,7 @@ namespace RealPolyclinic.ViewModels
                 Telephone="",
                 Address="",
                 Policy="",
-                Birthday=null
+                Birthday=""
             };
             addNew = new RelayCommand(obj => addnewpatient());
         }
@@ -62,7 +62,7 @@ namespace RealPolyclinic.ViewModels
                     SelectedPatient.Telephone = String.Empty;
                     SelectedPatient.Address = String.Empty;
                     SelectedPatient.Policy = String.Empty;
-                    SelectedPatient.Birthday = null;
+                    SelectedPatient.Birthday = String.Empty;
                 }
             }
             else
