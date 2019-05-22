@@ -24,7 +24,10 @@ namespace RealPolyclinic.ViewModels
                 SurName = "",
                 Patronymic = "",
                 Snils="",
-                Telephone=""
+                Telephone="",
+                Address="",
+                Policy="",
+                Birthday=null
             };
             addNew = new RelayCommand(obj => addnewpatient());
         }
@@ -38,15 +41,17 @@ namespace RealPolyclinic.ViewModels
                     {"@SN",SelectedPatient.SurName },
                     {"@Pat",SelectedPatient.Patronymic },
                     {"@Sni",SelectedPatient.Snils },
-                    {"@Tele",SelectedPatient.Telephone }
+                    {"@Tele",SelectedPatient.Telephone },
+                    {"@Addr",SelectedPatient.Address },
+                    {"@Poli",SelectedPatient.Policy },
+                    {"@Birth",Convert.ToDateTime(SelectedPatient.Birthday) },
+
                 };
-                string queryaddPat = "INSERT INTO Patients (Firstname,Surname,Patronymic,Snils,Telephone) VALUES(@FN,@SN,@Pat,@Sni,@Tele)";
+                string queryaddPat = "INSERT INTO Patients (Firstname,Surname,Patronymic,Snils,Telephone,Address,Policy,Birthday)" +
+                    " VALUES(@FN,@SN,@Pat,@Sni,@Tele,@Addr,@Poli,@Birth)";
                 Queue<SqlDbType> types = new Queue<SqlDbType>();
-                types.Enqueue(SqlDbType.NVarChar);
-                types.Enqueue(SqlDbType.NVarChar);
-                types.Enqueue(SqlDbType.NVarChar);
-                types.Enqueue(SqlDbType.NVarChar);
-                types.Enqueue(SqlDbType.NVarChar);
+                for (int i = 0; i < 7; i++) { types.Enqueue(SqlDbType.NVarChar); }
+                types.Enqueue(SqlDbType.Date);
                 WorkWithDb insertPat = new WorkWithDb();
                 if (insertPat.InsertInDb(queryaddPat, paramval, types))
                 {
@@ -55,6 +60,9 @@ namespace RealPolyclinic.ViewModels
                     SelectedPatient.Patronymic = String.Empty;
                     SelectedPatient.Snils = String.Empty;
                     SelectedPatient.Telephone = String.Empty;
+                    SelectedPatient.Address = String.Empty;
+                    SelectedPatient.Policy = String.Empty;
+                    SelectedPatient.Birthday = null;
                 }
             }
             else

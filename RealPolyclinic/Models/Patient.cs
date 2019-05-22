@@ -17,6 +17,9 @@ namespace RealPolyclinic.Models
         private string patronymic;
         private string snils;
         private string telephone;
+        private string address;
+        private string policy;
+        private DateTime? birthday;
         private int id_card;
 
         public string this[string columnName]
@@ -80,6 +83,20 @@ namespace RealPolyclinic.Models
                             Error += " Введите корректный номер телефона, состоящий из 11 цифр";
                         }
                         break;
+                    case "Policy":
+                        if (HelpfulMethods.CheckDigitsinStr(Policy, 16))
+                        {
+                            Error += " Введите корректный номер полиса, состоящий из 16 цифр";
+                        }
+                        break;
+                    case "Birthday":
+                        var thidt = birthday.Value.Date;
+                        if (thidt > DateTime.Now.Date||thidt.Year< DateTime.Now.Year-120)
+                        {
+                            Error += " Эта дата не доступна";
+                        }
+                        break;
+
                 }
                 return Error;
             }
@@ -147,6 +164,33 @@ namespace RealPolyclinic.Models
             {
                 telephone = value;
                 OnPropertyChanged("Telephone");
+            }
+        }
+        public string Address
+        {
+            get { return address; }
+            set
+            {
+                address = value;
+                OnPropertyChanged("Address");
+            }
+        }
+        public string Policy
+        {
+            get { return policy; }
+            set
+            {
+                policy = value;
+                OnPropertyChanged("Policy");
+            }
+        }
+        public string Birthday
+        {
+            get { return birthday.Value.ToString("dd/MM/yyyy"); }
+            set
+            {
+                 birthday = Convert.ToDateTime(value);
+                 OnPropertyChanged("Birthday");           
             }
         }
 

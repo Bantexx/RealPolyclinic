@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:RealPolyclinic.Views"
              xmlns:vm="clr-namespace:RealPolyclinic.ViewModels"
              xmlns:views="clr-namespace:RealPolyclinic.Views"
+             xmlns:types="clr-namespace:System;assembly=mscorlib"
              xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
@@ -73,6 +74,42 @@
             <xctk:MaskedTextBox Height="35" FontSize="25" Mask="0-(000)-000-00-00" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <xctk:MaskedTextBox.Text>
                     <Binding Path="SelectedPatient.Telephone" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Label Content="Полис:"/>
+            <xctk:MaskedTextBox Height="35" FontSize="25" Mask="0000 0000 0000 0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="SelectedPatient.Policy" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Label Content="Адрес:"/>
+            <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <TextBox.Text>
+                    <Binding Path="SelectedPatient.Address" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Дата рождения:"/>
+            <xctk:MaskedTextBox Height="35" FontSize="25" Mask="00/00/0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="SelectedPatient.Birthday" Mode="TwoWay" 
                              ValidatesOnExceptions="True" 
                              UpdateSourceTrigger="PropertyChanged">
                         <Binding.ValidationRules>
