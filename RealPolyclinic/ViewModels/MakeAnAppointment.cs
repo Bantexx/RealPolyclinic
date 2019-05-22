@@ -61,7 +61,7 @@ namespace RealPolyclinic.ViewModels
         private void MakeRecord(DateTime currentdate)
         {
 
-            if (Id_Patient != 0 && CheckAppointMent())
+            if (Id_Patient != 0&&CheckPatient() && CheckAppointMent())
             {
                 string sqlquery = "INSERT INTO Appointments(Id_Doctor,Date,Time,Id_Patient) VALUES(@Id_Doc,@Date,@Time,@Id_Pat)";
                 Dictionary<string, object> newmAppoint = new Dictionary<string, object>()
@@ -147,6 +147,26 @@ namespace RealPolyclinic.ViewModels
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+        }
+        private bool CheckPatient()
+        {
+            using (SqlConnection connect = new SqlConnection(connectionString))
+            {
+                connect.Open();
+                string sqlexp = "SELECT * FROM Patients Where Id_Patient=@Pat";
+                SqlCommand cmd = new SqlCommand(sqlexp, connect);
+                cmd.Parameters.AddWithValue("@Pat", Id_Patient);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("Такого пациента нет");
+                    return false;
+                }              
             }
         }
     }

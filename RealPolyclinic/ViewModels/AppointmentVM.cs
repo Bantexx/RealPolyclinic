@@ -140,79 +140,89 @@ namespace RealPolyclinic.ViewModels
             string datetime;
             DateTime dt;
             TimeSpan ts;
-
-            if (selectedType != "" && selectedType != null&& Docs.Count > 0)
-            {              
-                for (int i = 0; i < times.Length; i++)
+            if (AvailbaleRecord(selectedDate))
+            {
+                if (selectedType != "" && selectedType != null && Docs.Count > 0)
                 {
-                    templistInfo = new List<InfoAppoint>();
-                    datetime = times[i];
-                    for (int j = 0; j < Docs.Count; j++)
+                    for (int i = 0; i < times.Length; i++)
                     {
-                        bool isWork = CheckTimeWork(datetime, Docs[j].Id_Doctor);
-                        using (SqlConnection connect = new SqlConnection(connectionString))
+                        templistInfo = new List<InfoAppoint>();
+                        datetime = times[i];
+                        for (int j = 0; j < Docs.Count; j++)
                         {
-                            connect.Open();
-                            string sqlexp =
-                                String.Format("SELECT * FROM Appointments WHERE Id_Doctor='{0}' " +
-                                "and (Date = '{1}' and Time='{2}')",
-                                Docs[j].Id_Doctor, selectedDate.Date.ToString("yyyy-MM-dd"),datetime);
-                            SqlCommand cmd = new SqlCommand(sqlexp, connect);
-                            SqlDataReader reader = cmd.ExecuteReader();
+                            bool isWork = CheckTimeWork(datetime, Docs[j].Id_Doctor);
+                            using (SqlConnection connect = new SqlConnection(connectionString))
+                            {
+                                connect.Open();
+                                string sqlexp =
+                                    String.Format("SELECT * FROM Appointments WHERE Id_Doctor='{0}' " +
+                                    "and (Date = '{1}' and Time='{2}')",
+                                    Docs[j].Id_Doctor, selectedDate.Date.ToString("yyyy-MM-dd"), datetime);
+                                SqlCommand cmd = new SqlCommand(sqlexp, connect);
+                                SqlDataReader reader = cmd.ExecuteReader();
 
-                            if (reader.HasRows)
-                            {
-                                reader.Read();
-                                dt = reader.GetDateTime(2);
-                                ts = reader.GetTimeSpan(3);
-                                if (!isWork)
+                                if (reader.HasRows)
                                 {
-                                    textinBtn = "Not Work";
-                                }
-                                else if (dt.Date < DateTime.Now.Date)
-                                {
-                                    textinBtn = "Blocked";
-                                }
-                                else if (dt.Date <= DateTime.Now.Date && Convert.ToInt32(datetime.Substring(0, datetime.LastIndexOf(':'))) < DateTime.Now.Hour)
-                                {
-                                    textinBtn = "Time is up";
-                                }
-                                else if (ts.Hours == Convert.ToInt32(datetime.Substring(0, datetime.LastIndexOf(':'))))
-                                {
-                                    textinBtn = "Booked";
-                                }
-                                else
-                                {
-                                    textinBtn = "Free";
-                                }
-                            }
-                            else
-                            {
-                                if (!isWork)
-                                {
-                                    textinBtn = "Not Work";
-                                }
-                                else if (selectedDate.Date <= DateTime.Now.Date)
-                                {
-                                    textinBtn = "Blocked";
+                                    reader.Read();
+                                    dt = reader.GetDateTime(2);
+                                    ts = reader.GetTimeSpan(3);
+                                    if (!isWork)
+                                    {
+                                        textinBtn = "Not Work";
+                                    }
+                                    else if (dt.Date < DateTime.Now.Date)
+                                    {
+                                        textinBtn = "Blocked";
+                                    }
+                                    else if (dt.Date <= DateTime.Now.Date && Convert.ToInt32(datetime.Substring(0, datetime.LastIndexOf(':'))) < DateTime.Now.Hour)
+                                    {
+                                        textinBtn = "Time is up";
+                                    }
+                                    else if (ts.Hours == Convert.ToInt32(datetime.Substring(0, datetime.LastIndexOf(':'))))
+                                    {
+                                        textinBtn = "Booked";
+                                    }
+                                    else
+                                    {
+                                        textinBtn = "Free";
+                                    }
                                 }
                                 else
                                 {
-                                    textinBtn = "Free";
+                                    if (!isWork)
+                                    {
+                                        textinBtn = "Not Work";
+                                    }
+                                    else if (selectedDate.Date < DateTime.Now.Date)
+                                    {
+                                        textinBtn = "Blocked";
+                                    }
+                                    else if (selectedDate.Date <= DateTime.Now.Date && Convert.ToInt32(datetime.Substring(0, datetime.LastIndexOf(':'))) < DateTime.Now.Hour)
+                                    {
+                                        textinBtn = "Time is up";
+                                    }
+                                    else
+                                    {
+                                        textinBtn = "Free";
+                                    }
                                 }
+                                templistInfo.Add(new InfoAppoint
+                                {
+                                    Doc = Docs[j],
+                                    Text = textinBtn,
+                                    Time = datetime,
+                                    Date = selectedDate.Date
+                                });
                             }
-                            templistInfo.Add(new InfoAppoint
-                            {
-                                Doc = Docs[j],
-                                Text = textinBtn,
-                                Time = datetime,
-                                Date = selectedDate.Date
-                            });
                         }
+                        ScheduleTable.Add(templistInfo);
                     }
-                    ScheduleTable.Add(templistInfo);
                 }
-            }           
+            }
+            else
+            {
+                MessageBox.Show("Запись на эту дату еще не доступна");
+            }
         }
         private string[] TakeTypesofDoctors()
         {
@@ -284,6 +294,17 @@ namespace RealPolyclinic.ViewModels
             }
            
         }
-
+        private bool AvailbaleRecord(DateTime date)
+        {
+            var nowdate = DateTime.Now.Date;
+            if (nowdate.AddDays(30)>=date)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }
