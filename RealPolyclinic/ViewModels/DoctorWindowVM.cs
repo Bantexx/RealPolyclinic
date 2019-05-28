@@ -52,9 +52,9 @@ namespace RealPolyclinic.ViewModels
                             Id_Doctor = reader.GetInt32(0),
                             FullName = reader.GetString(1),
                             Specialization = reader.GetInt32(2),
-                            Experience = reader.GetInt32(3),
-                            CabinetNumber = reader.GetInt16(4),
-                            Login = reader.GetString(5)
+                            Experience = reader.GetValue(3) == DBNull.Value ? 0 : reader.GetInt32(3),
+                            CabinetNumber = reader.GetValue(4) == DBNull.Value ? 0 : reader.GetInt32(4),
+                            Login = reader.GetValue(5) == DBNull.Value ? "" : reader.GetString(5)
                         };
                     }
                 }

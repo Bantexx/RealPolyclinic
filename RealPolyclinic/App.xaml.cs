@@ -1,4 +1,5 @@
-﻿using RealPolyclinic.ViewModels;
+﻿using RealPolyclinic.Models;
+using RealPolyclinic.ViewModels;
 using RealPolyclinic.Views;
 using System;
 using System.Collections.Generic;
@@ -22,10 +23,14 @@ namespace RealPolyclinic
             base.OnStartup(e);
             //AuthWin = new Authorization() { DataContext = Avm };
             //AuthWin.Show();
-            MainVM MVM = new MainVM();
-            MainWindow mw = new MainWindow() { DataContext = MVM };
-            mw.Show();
-
+            User ActiveUser = new User()
+            {
+                login = "Petruxa",
+                password = "1389",
+            };
+            DoctorWindowVM dwmv = new DoctorWindowVM(ActiveUser);
+            DoctorWindow dw = new DoctorWindow() { DataContext = dwmv };
+            dw.Show();
         }
     }
 }

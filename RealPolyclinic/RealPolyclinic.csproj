@@ -106,6 +106,7 @@
     <Compile Include="ViewModels\PatientProfileVM.cs" />
     <Compile Include="ViewModels\ScheduleTableVM.cs" />
     <Compile Include="ViewModels\SearchPatientVM.cs" />
+    <Compile Include="ViewModels\ShowMedCard.cs" />
     <Compile Include="Views\AddPatient.xaml.cs">
       <DependentUpon>AddPatient.xaml</DependentUpon>
     </Compile>
@@ -126,6 +127,9 @@
     </Compile>
     <Compile Include="Views\MedCard.xaml.cs">
       <DependentUpon>MedCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MedCardPat.xaml.cs">
+      <DependentUpon>MedCardPat.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PatientProfile.xaml.cs">
       <DependentUpon>PatientProfile.xaml</DependentUpon>
@@ -174,6 +178,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MedCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MedCardPat.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
