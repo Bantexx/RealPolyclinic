@@ -1,0 +1,146 @@
+﻿<Window x:Class="RealPolyclinic.Views.AddtoCard"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RealPolyclinic.Views"
+        WindowStartupLocation="CenterScreen"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="AddtoCard" Height="450" Width="500">
+    <Window.Resources>
+        <ControlTemplate x:Key="validationFailed">
+            <StackPanel>
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder />
+                </Border>
+                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="14" FontWeight="Light">!</TextBlock>
+            </StackPanel>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="65"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Margin="10" Grid.Row="0" VerticalAlignment="Center">
+            <Label>Select what u want to add:</Label>
+            <ComboBox SelectedItem="{Binding selectedItem}" ItemsSource="{Binding elementsCard}"/>
+        </StackPanel>
+
+        <StackPanel Margin="10"  Visibility="{Binding showDiag}" Grid.Row="1">
+            <Label Content="Title:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="diagnosis.Title" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Description:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="diagnosis.Description" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Button Margin="0 25 0 0" Content="Add_Diag" Command="{Binding Add_Diag}"></Button>
+        </StackPanel>
+        <StackPanel Margin="10" Visibility="{Binding showVacc}" Grid.Row="1">
+            <Label Content="Type:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="vaccination.Type" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Description:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="vaccination.Description" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Date_Vacc"></Label>
+            <xctk:MaskedTextBox Height="30" FontSize="20" Mask="00/00/0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="vaccination.Date" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Button Margin="0 25 0 0" Content="Add_Vacc" Command="{Binding Add_Vacc}"></Button>
+        </StackPanel>
+        <StackPanel Margin="10" Visibility="{Binding showSurv}" Grid.Row="1">
+            <Label Content="Title:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="survey.Title" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Description:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="survey.Description" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Date_Survey"></Label>
+            <xctk:MaskedTextBox Height="30" FontSize="20" Mask="00/00/0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="survey.Date" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Button Margin="0 25 0 0" Content="Add_Survey" Command="{Binding Add_Surv}"></Button>
+        </StackPanel>
+        <StackPanel Margin="10" Visibility="{Binding showAnalys}" Grid.Row="1">
+            <Label Content="Type:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="analys.Type" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Description:"/>
+            <TextBox Height="30" FontSize="20" >
+                <TextBox.Text>
+                    <Binding Path="analys.Description" Mode="TwoWay" 
+                             UpdateSourceTrigger="PropertyChanged">
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
+            <Label Content="Date_Analys"></Label>
+            <xctk:MaskedTextBox Height="30" FontSize="20" Mask="00/00/0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="analys.Date" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Button Margin="0 25 0 0" Content="Add_Survey" Command="{Binding Add_Analys}"></Button>
+        </StackPanel>
+        
+    </Grid>
+</Window>

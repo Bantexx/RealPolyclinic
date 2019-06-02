@@ -97,7 +97,7 @@ namespace RealPolyclinic.ViewModels
                                     Address=item[6]==DBNull.Value?"": item[6].ToString(),
                                     Id_Card =item[7]== DBNull.Value ? 0 : Convert.ToInt32(item[7]),
                                     Policy= item[8] == DBNull.Value ? "" : item[8].ToString(),
-                                    Birthday = item[9] == DBNull.Value ? "" : item[9].ToString()
+                                    Birthday = item[9] == DBNull.Value ? "" : Convert.ToDateTime(item[9]).ToString("dd.MM.yyyy")
                                 });
                             }
                             dt = null;

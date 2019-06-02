@@ -19,7 +19,7 @@ namespace RealPolyclinic.Models
         private string telephone;
         private string address;
         private string policy;
-        private DateTime birthday;
+        private string birthday;
         private int id_card;
 
         public string this[string columnName]
@@ -62,10 +62,6 @@ namespace RealPolyclinic.Models
                         {
                             Error += " Отчество содержит цифры ";
                         }
-                        if (Patronymic.Length < 2 || Patronymic.Length > 20)
-                        {
-                            Error += " Отчество должно быть больше 1 и меньше 20 символов ";
-                        }
                         if (!HelpfulMethods.IsOnlyLetters(Patronymic))
                         {
                             Error += " Отчество содержит недопустимы символы ";
@@ -90,10 +86,14 @@ namespace RealPolyclinic.Models
                         }
                         break;
                     case "Birthday":
-                        var thidt = birthday.Date;
-                        if (thidt > DateTime.Now.Date||thidt.Year< DateTime.Now.Year-120)
+                        DateTime temp;
+                        if (!DateTime.TryParse(birthday, out temp))
                         {
-                            Error += " Эта дата не доступна";
+                            Error += " Неправильная дата ";
+                        }
+                        else if(Convert.ToDateTime(birthday).Date>DateTime.Now.Date|| Convert.ToDateTime(birthday).Date.Year<DateTime.Now.Year-120)
+                        { 
+                            Error += " Неправильный диапозон даты ";
                         }
                         break;
 
@@ -188,14 +188,11 @@ namespace RealPolyclinic.Models
         {
             get
             {
-                return birthday.Date.ToString("dd/MM/yyyy");          
+                return birthday;        
             }
             set
             {
-                if (value != "")
-                {
-                    birthday = Convert.ToDateTime(value);
-                }
+                birthday = value;
                 OnPropertyChanged("Birthday");
             }
         }

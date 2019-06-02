@@ -9,7 +9,8 @@
     <UserControl.Resources>
 
         <DataTemplate x:Key="DataTemplate_Level2">
-            <Button Content="{Binding Text}" CommandParameter="{Binding}" Command="{Binding DataContext.doRecord,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}" Height="25" Width="150" Margin="4,4,4,4"/>
+            <Button Content="{Binding Text}" CommandParameter="{Binding}" Command="{Binding DataContext.doRecord,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=UserControl}}"
+                    Height="25" Width="150" Margin="4,5,4,4"/>
         </DataTemplate>
         
         <DataTemplate x:Key="DataTemplate_Textbox">
@@ -18,8 +19,8 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="DataTemplate_Label">
-            <Border BorderBrush="Green" BorderThickness="2">
-                <Label HorizontalAlignment="Right" MaxWidth="40" Height="24" Content="{Binding}"></Label>
+            <Border BorderBrush="Black" BorderThickness="2">
+                <TextBlock HorizontalAlignment="Center" Width="120" FontSize="18" Text="{Binding}"></TextBlock>
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="DataTemplate_Level1">
@@ -42,7 +43,6 @@
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition></RowDefinition>
-            <RowDefinition></RowDefinition>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
@@ -53,32 +53,80 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        
         <StackPanel Margin="10 0 0 0" Grid.Row="0" Grid.Column="0" Grid.RowSpan="1" Grid.ColumnSpan="2">
             <Label>Choose specialty doctor:</Label>
             <ComboBox SelectedItem="{Binding selectedType}" ItemsSource="{Binding typeofDoctors}">
             </ComboBox>
             <Button Command="{Binding tryit}">Try it</Button>
         </StackPanel>
-        <ScrollViewer HorizontalScrollBarVisibility="Hidden" Name="sv2" ScrollChanged="Sv2_ScrollChanged" VerticalScrollBarVisibility="Hidden"  Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="4">
-            <ListBox Visibility="{Binding ShowElem}" ItemTemplate="{DynamicResource DataTemplate_Textbox}"  Height="55" VerticalAlignment="Bottom"  ItemsSource="{Binding Docs}">
-                <ListBox.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Horizontal">
-                        </StackPanel>
-                    </ItemsPanelTemplate>
-                </ListBox.ItemsPanel>
-             </ListBox>
-        </ScrollViewer>
-        <ListBox Visibility="{Binding ShowElem}" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" ItemTemplate="{DynamicResource DataTemplate_Label}" IsHitTestVisible="False" Width="53" HorizontalAlignment="Right" Grid.Row="3" Grid.Column="0" Grid.RowSpan="4" ItemsSource="{Binding times}">
 
-        </ListBox>
-        <Border Visibility="{Binding ShowElem}" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="4" BorderBrush="Green" BorderThickness="1">
-            <ScrollViewer Name="sv1" VerticalScrollBarVisibility="Hidden" ScrollChanged="Sv2_ScrollChanged" HorizontalScrollBarVisibility="Visible">
-                <Grid>
-                    <ItemsControl ItemsSource="{Binding ScheduleTable,UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{DynamicResource DataTemplate_Level1}"/>
-                </Grid>
-            </ScrollViewer>
+        <Border Margin="0 0 0 25" Visibility="{Binding ShowElem}" Grid.Row="2" Grid.Column="1" Grid.RowSpan="5" Grid.ColumnSpan="4" BorderBrush="Black" BorderThickness="2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+                 <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+                <StackPanel Grid.Row="0" Grid.Column="0">
+                    <TextBlock FontSize="16" Text="Time" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+                    </TextBlock>
+                </StackPanel>
+                <Border Visibility="{Binding ShowElem}" BorderBrush="Black" BorderThickness="2 0 0 2"  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="4">
+                    <ScrollViewer HorizontalScrollBarVisibility="Hidden" Name="sv2" ScrollChanged="Sv2_ScrollChanged" VerticalScrollBarVisibility="Hidden">
+                        <ListBox ItemsSource="{Binding Docs}">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                    </StackPanel>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
+                            <ListBox.ItemContainerStyle>
+                                <Style TargetType="ListBoxItem">
+                                    <Setter Property="Margin" Value="0 0 3 3"/>
+                                    <Setter Property="BorderThickness" Value="2"/>
+                                    <Setter Property="BorderBrush" Value="BlueViolet"/>
+                                    <Setter Property="FontSize" Value="12"/>
+                                    <Setter Property="Width" Value="150"/>
+                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                                    <Setter Property="Content" Value="{Binding FullName}"/>
+                                </Style>
+                            </ListBox.ItemContainerStyle>
+                        </ListBox>
+                    </ScrollViewer>
+                </Border>
+                <Border Visibility="{Binding ShowElem}" BorderBrush="Black" BorderThickness="0 2 2 0" Grid.Row="1" Grid.Column="0" Grid.RowSpan="4" >
+                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden" IsHitTestVisible="False" ItemsSource="{Binding times}">
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Margin" Value="0 4 0 4"/>
+                                <Setter Property="BorderThickness" Value="2"/>
+                                <Setter Property="BorderBrush" Value="BlueViolet"/>
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                    </ListBox>
+                </Border>
+                <Border Visibility="{Binding ShowElem}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="4" Grid.RowSpan="4" BorderBrush="Black" BorderThickness="1">
+                    <ScrollViewer Name="sv1" VerticalScrollBarVisibility="Hidden" ScrollChanged="Sv2_ScrollChanged" HorizontalScrollBarVisibility="Visible">
+                        <Grid>
+                            <ItemsControl ItemsSource="{Binding ScheduleTable,UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{DynamicResource DataTemplate_Level1}"/>
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+        </Grid>
         </Border>
+        
         <Calendar SelectedDate="{Binding SelectedDate}" Visibility="{Binding ShowElem}" Margin="0 30 0 0" Grid.Row="1" Grid.Column="5" Grid.RowSpan="3" Grid.ColumnSpan="2">
             
         </Calendar>

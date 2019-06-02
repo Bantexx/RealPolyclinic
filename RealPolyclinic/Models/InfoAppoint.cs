@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace RealPolyclinic.Models
 {
-    public class InfoAppoint 
+    public class InfoAppoint
     {
         public Doctor Doc { get; set; }
         public string Text { get; set; }
         public string Time { get; set; }
-        public DateTime Date { get; set; }   
+        public DateTime Date { get; set; }
         public int Id_Pat { get; set; }
         public int Id { get; set; }
+        public string textdate {get;set;}
     }
 }

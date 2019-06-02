@@ -1,5 +1,6 @@
 ﻿using RealPolyclinic.HelpMethods;
 using RealPolyclinic.Models;
+using RealPolyclinic.Views;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -26,10 +27,12 @@ namespace RealPolyclinic.ViewModels
             }
         }
         public ICommand showSched { get; set; }
+        public ICommand exitDoc { get; set; }
 
         public DoctorWindowVM(User user)
         {
             showSched = new RelayCommand(x =>CurrentView= new ScheduleTableVM(ActiveDoc));
+            exitDoc = new RelayCommand(x => ExitWindow(x));
             SelectDoctor(user);
         }
         private void SelectDoctor(User actdoc)
@@ -64,6 +67,14 @@ namespace RealPolyclinic.ViewModels
                 }
 
             }
+        }
+        private void ExitWindow(object items)
+        {
+            object[] parameters = items as object[];
+            var currentWind = parameters[0] as Window;
+            Authorization auth = new Authorization() { DataContext = new AuthorizationVM() };
+            auth.Show();
+            currentWind.Close();
         }
 
     }

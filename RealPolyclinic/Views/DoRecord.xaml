@@ -4,21 +4,43 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RealPolyclinic.Views"
+        WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="DoRecord" Height="250" Width="400">
-    <Grid>
-        <StackPanel Width="200" HorizontalAlignment="Center" VerticalAlignment="Center">
-            <StackPanel Orientation="Horizontal" Visibility="{Binding VisibleDel}">
-                <Label Content="Name:"></Label>
-                <Label Margin="-5 0 0 0" Content="{Binding NamePat}"></Label>
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        Title="DoRecord" Height="400" Width="400">
+    <Window.Resources>
+        <ControlTemplate x:Key="validationFailed">
+            <StackPanel>
+                <Border BorderBrush="Red" BorderThickness="2">
+                    <AdornedElementPlaceholder />
+                </Border>
+                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="12" FontWeight="Light">!</TextBlock>
             </StackPanel>
-            <Label Content="Id_patient"></Label>
-            <TextBox Text="{Binding Id_Patient}"></TextBox>
-            <Label Content="Doctor"></Label>
-            <TextBox IsReadOnly="True" Text="{Binding record.Doc.FullName}"></TextBox>
-            <Label Content="Date"></Label>
-            <TextBox IsReadOnly="True" Text="{Binding showDate}"></TextBox>
-            <Button Content="Record" Command="{Binding MakeAppoint}"></Button>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <StackPanel Margin="0 30 0 0" Width="310" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <StackPanel Orientation="Horizontal" Visibility="{Binding VisibleDel}">
+                <Label FontSize="16" Content="Name:"></Label>
+                <Label FontSize="16" Content="{Binding NamePat}"></Label>
+            </StackPanel>
+            <Label FontSize="16"  Content="Policy:"></Label>
+            <xctk:MaskedTextBox Height="35" FontSize="25" Mask="0000 0000 0000 0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
+                <xctk:MaskedTextBox.Text>
+                    <Binding Path="pat.Policy" Mode="TwoWay" 
+                             ValidatesOnExceptions="True" 
+                             UpdateSourceTrigger="PropertyChanged">
+                        <Binding.ValidationRules>
+                            <DataErrorValidationRule />
+                        </Binding.ValidationRules>
+                    </Binding>
+                </xctk:MaskedTextBox.Text>
+            </xctk:MaskedTextBox>
+            <Label FontSize="16" Margin="0 20 0 5" Content="Doctor"></Label>
+            <TextBox Height="35" FontSize="25"  IsReadOnly="True" Text="{Binding record.Doc.FullName}"></TextBox>
+            <Label FontSize="16" Margin="0 0 0 5" Content="Date"></Label>
+            <TextBox Height="35" FontSize="25"  IsReadOnly="True" Text="{Binding showDate}"></TextBox>
+            <Button Margin="0 10 0 10" Content="Record" Command="{Binding MakeAppoint}"></Button>
             <Button Visibility="{Binding VisibleDel}" Content="Del Record" Command="{Binding DelAppoint}"></Button>
         </StackPanel>
     </Grid>

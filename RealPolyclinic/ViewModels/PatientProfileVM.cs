@@ -16,8 +16,8 @@ namespace RealPolyclinic.ViewModels
 {
     public class PatientProfileVM : MainVM
     {
+        string connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
         public ICommand EdProfile { get; set; }
-        public ICommand CreateCard { get; set; }
         public ICommand delProfile { get; set; }
         private Patient _InfoPat;
         public EditProfileWindow epw;
@@ -31,38 +31,7 @@ namespace RealPolyclinic.ViewModels
             }
         }
 
-        private string _CheckCard;
-        public string Check_Card
-        {
-            get { return _CheckCard; }
-            set
-            {
-                _CheckCard = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _isVisible;
-        public string isVisible
-        {
-            get { return _isVisible; }
-            set
-            {
-                _isVisible = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private string _VisibleCard;
-        public string VisibleCard
-        {
-            get { return _VisibleCard; }
-            set
-            {
-                _VisibleCard = value;
-                OnPropertyChanged();
-            }
-        }
+        public List<InfoAppoint> appointments { get; set; }
 
         private BaseViewModel _ShowMedCard;
         public BaseViewModel ShowMedCard
@@ -78,27 +47,14 @@ namespace RealPolyclinic.ViewModels
         public PatientProfileVM(int temp)
         {
             EdProfile = new RelayCommand(x => CreateNewEditWindow(x));
-            CreateCard = new RelayCommand(x =>CreateMedCard());
             delProfile = new RelayCommand(x => DelPatient(temp));
             SelectById(temp);
-            if (InfoPat.Id_Card == 0)
-            {
-                Check_Card = "Нет";
-                isVisible = "Visible";
-                VisibleCard = "Hidden";               
-            }
-            else
-            {    
-                isVisible = "Hidden";
-                Check_Card = "Есть";
-                VisibleCard = "Visible";
-                ShowMedCard = new MedCardVM(temp);
-            }
+            ShowMedCard = new MedCardVM(temp);
+            SelectAppointments(temp);
         }
         
         private Patient SelectById(int id)
         {
-            string connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
             using (SqlConnection connect = new SqlConnection(connectionString))
             {
                 connect.Open();
@@ -119,7 +75,7 @@ namespace RealPolyclinic.ViewModels
                         Address = reader.GetValue(6) == DBNull.Value ? "" : reader.GetString(6),
                         Id_Card = reader.GetValue(7) == DBNull.Value ? 0 : reader.GetInt32(7),
                         Policy = reader.GetValue(8) == DBNull.Value ? "" : reader.GetString(8),
-                        Birthday = reader.GetValue(9) == DBNull.Value ? "" : reader.GetDateTime(9).ToString()
+                        Birthday = reader.GetValue(9) == DBNull.Value ? "" : reader.GetDateTime(9).ToString("dd.MM.yyyy")
                     };
                 }
                 reader.Close();
@@ -130,30 +86,7 @@ namespace RealPolyclinic.ViewModels
         {
             epw = new EditProfileWindow(prof);
             epw.ShowDialog();          
-        }
-        private void CreateMedCard()
-        {
-            Dictionary<string, object> newmedcard = new Dictionary<string, object>()
-            {
-                {"@Id_P",InfoPat.Id },
-                {"@D_C", DateTime.Now},
-                {"@Ins_Co",666}
-            };
-            Dictionary<string, object> mc = new Dictionary<string, object>()
-            {
-                {"@Id",InfoPat.Id}
-            };
-            var query = "INSERT INTO Med_Card (Id_Patient, Date_Created, Institution_Code) VALUES (@Id_P, @D_C, @Ins_Co)";
-            var query1 = "UPDATE Patients SET Id_Card=(SELECT Id_Card FROM Med_Card WHERE Id_Patient=@Id) WHERE Id_Patient=@Id";
-
-            var types = new Queue<SqlDbType>();
-            types.Enqueue(SqlDbType.Int);
-            types.Enqueue(SqlDbType.Date);
-            types.Enqueue(SqlDbType.SmallInt);
-            WorkWithDb wwd = new WorkWithDb();
-            wwd.InsertInDb(query,newmedcard,types);
-            wwd.UpdateDb(query1, mc);
-        }
+        }     
         private void DelPatient(int id)
         {
             var connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
@@ -185,6 +118,41 @@ namespace RealPolyclinic.ViewModels
                 catch (SqlException ex)
                 {
                     MessageBox.Show(ex.Message);
+                }
+            }
+        }
+        private void SelectAppointments(int id)
+        {
+            appointments = new List<InfoAppoint>();
+            using (SqlConnection connect = new SqlConnection(connectionString))
+            {
+                connect.Open();
+                string sqlexp = "SELECT * FROM Appointments WHERE Id_Patient =@Id_p";
+                SqlCommand cmd = new SqlCommand(sqlexp, connect);
+                cmd.Parameters.AddWithValue("@Id_p", id);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                        string namedoc;
+                        using (SqlConnection connect1 = new SqlConnection(connectionString))
+                        {
+                            connect1.Open();
+                            string sqlexp1 = "SELECT * FROM Doctors WHERE Id_Doctor =@Id_d";
+                            SqlCommand cmd1 = new SqlCommand(sqlexp1, connect1);
+                            cmd1.Parameters.AddWithValue("@Id_d", reader.GetInt32(1));
+                            SqlDataReader reader1 = cmd1.ExecuteReader();
+                            reader1.Read();
+                            namedoc = reader1.GetString(1);
+                        }
+                        appointments.Add(new InfoAppoint
+                        {
+                            textdate=reader.GetDateTime(2).ToString("dd/MM/yyyy"),
+                            Time=reader.GetTimeSpan(3).Hours.ToString()+":00",
+                            Text = namedoc
+                        });
+                    }
                 }
             }
         }

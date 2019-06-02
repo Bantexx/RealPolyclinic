@@ -2,7 +2,9 @@
 using RealPolyclinic.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -44,7 +46,7 @@ namespace RealPolyclinic.ViewModels
                     {"@Tele",SelectedPatient.Telephone },
                     {"@Addr",SelectedPatient.Address },
                     {"@Poli",SelectedPatient.Policy },
-                    {"@Birth",Convert.ToDateTime(SelectedPatient.Birthday) },
+                    {"@Birth",Convert.ToDateTime(SelectedPatient.Birthday)},
 
                 };
                 string queryaddPat = "INSERT INTO Patients (Firstname,Surname,Patronymic,Snils,Telephone,Address,Policy,Birthday)" +
@@ -55,6 +57,7 @@ namespace RealPolyclinic.ViewModels
                 WorkWithDb insertPat = new WorkWithDb();
                 if (insertPat.InsertInDb(queryaddPat, paramval, types))
                 {
+                    CreateMedCard(SelectedPatient.Policy);
                     SelectedPatient.FirstName = String.Empty;
                     SelectedPatient.SurName = String.Empty;
                     SelectedPatient.Patronymic = String.Empty;
@@ -70,6 +73,43 @@ namespace RealPolyclinic.ViewModels
                 MessageBox.Show("Исправте поля");
             }
 
+        }
+        private void CreateMedCard(string policy)
+        {
+            int id_pat = 0;
+            string connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
+            using (SqlConnection connect = new SqlConnection(connectionString))
+            {
+                connect.Open();
+                string sqlexp = "SELECT * FROM Patients WHERE Policy =@pol";
+                SqlCommand cmd = new SqlCommand(sqlexp, connect);
+                cmd.Parameters.AddWithValue("@pol", policy);
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    reader.Read();
+                    id_pat = reader.GetInt32(0);
+                }
+            }
+            Dictionary<string, object> newmedcard = new Dictionary<string, object>()
+            {
+                {"@Id_P",id_pat},
+                {"@D_C", DateTime.Now.Date},
+                {"@Ins_Co",666}
+            };
+            Dictionary<string, object> mc = new Dictionary<string, object>()
+            {
+                {"@Id",id_pat}
+            };
+            var query = "INSERT INTO Med_Card (Id_Patient, Date_Created, Institution_Code) VALUES (@Id_P, @D_C, @Ins_Co)";
+            var query1 = "UPDATE Patients SET Id_Card=(SELECT Id_Card FROM Med_Card WHERE Id_Patient=@Id) WHERE Id_Patient=@Id";
+            var types = new Queue<SqlDbType>();
+            types.Enqueue(SqlDbType.Int);
+            types.Enqueue(SqlDbType.Date);
+            types.Enqueue(SqlDbType.SmallInt);
+            WorkWithDb wwd = new WorkWithDb();
+            wwd.InsertInDb(query, newmedcard, types);
+            wwd.UpdateDb(query1, mc);
         }
     }
 }

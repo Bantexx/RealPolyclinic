@@ -89,11 +89,16 @@
     <Compile Include="HelpMethods\HelpfulMethods.cs" />
     <Compile Include="HelpMethods\myConverter.cs" />
     <Compile Include="HelpMethods\WorkWithDb.cs" />
+    <Compile Include="Models\Analysis.cs" />
+    <Compile Include="Models\Diagnosis.cs" />
     <Compile Include="Models\Doctor.cs" />
     <Compile Include="Models\InfoAppoint.cs" />
     <Compile Include="Models\MedCard.cs" />
     <Compile Include="Models\Patient.cs" />
+    <Compile Include="Models\Survey.cs" />
     <Compile Include="Models\User.cs" />
+    <Compile Include="Models\Vaccination.cs" />
+    <Compile Include="ViewModels\AddNewToCardVM.cs" />
     <Compile Include="ViewModels\AddPatientVM.cs" />
     <Compile Include="ViewModels\AppointmentVM.cs" />
     <Compile Include="ViewModels\AuthorizationVM.cs" />
@@ -102,6 +107,7 @@
     <Compile Include="ViewModels\EditProfileVM.cs" />
     <Compile Include="ViewModels\MainVM.cs" />
     <Compile Include="ViewModels\MakeAnAppointment.cs" />
+    <Compile Include="ViewModels\MarkVisitVM.cs" />
     <Compile Include="ViewModels\MedCardVM.cs" />
     <Compile Include="ViewModels\PatientProfileVM.cs" />
     <Compile Include="ViewModels\ScheduleTableVM.cs" />
@@ -109,6 +115,9 @@
     <Compile Include="ViewModels\ShowMedCard.cs" />
     <Compile Include="Views\AddPatient.xaml.cs">
       <DependentUpon>AddPatient.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\AddtoCard.xaml.cs">
+      <DependentUpon>AddtoCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Authorization.xaml.cs">
       <DependentUpon>Authorization.xaml</DependentUpon>
@@ -124,6 +133,9 @@
     </Compile>
     <Compile Include="Views\MakingAppointment.xaml.cs">
       <DependentUpon>MakingAppointment.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MarkVisit.xaml.cs">
+      <DependentUpon>MarkVisit.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MedCard.xaml.cs">
       <DependentUpon>MedCard.xaml</DependentUpon>
@@ -157,6 +169,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\AddtoCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Authorization.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -174,6 +190,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\MakingAppointment.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MarkVisit.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

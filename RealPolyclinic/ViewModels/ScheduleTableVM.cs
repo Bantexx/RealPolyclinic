@@ -17,8 +17,20 @@ namespace RealPolyclinic.ViewModels
     public class ScheduleTableVM : BaseViewModel
     {
         public Doctor Doc { get; set; }
-        public ObservableCollection<InfoAppoint> mycoll { get; set; }
-        public ICommand addVisit { get; set; }
+        private ObservableCollection<InfoAppoint> _mcl;
+        public ObservableCollection<InfoAppoint> mycoll
+        {
+            get { return _mcl; }
+            set
+            {
+                _mcl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public ICommand backDay { get; set; }
+        public ICommand forwardDay { get; set; }
+
         private BaseViewModel _ViewPatient;
         public BaseViewModel ViewPatient
         {
@@ -29,6 +41,7 @@ namespace RealPolyclinic.ViewModels
                 OnPropertyChanged();
             }
         }
+
         private InfoAppoint _selectPat;
         public InfoAppoint selectedPatient
         {
@@ -36,20 +49,75 @@ namespace RealPolyclinic.ViewModels
             set
             {
                 InfoAppoint IA = value as InfoAppoint;
-                ViewPatient = new ShowMedCard(IA.Id_Pat);
+                ViewPatient = new ShowMedCard(IA.Id_Pat,Doc.Id_Doctor,IA.Date);
                 _selectPat = value;
                 OnPropertyChanged();
             }
         }
+
+        private string visibtxt;
+        private string visiblst;
+
+        public string visibtext
+        {
+            get { return visibtxt; }
+            set
+            {
+
+                visibtxt = value;
+                OnPropertyChanged();
+            }
+        }
+        public string visibList
+        {
+            get { return visiblst; }
+            set
+            {
+
+                visiblst = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string seldate;
+        public string selectDate
+        {
+            get { return seldate; }
+            set
+            {
+
+                seldate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        DateTime currentdate;
+        public DateTime CurrentDate
+        {
+            get { return currentdate; }
+            set
+            {
+                currentdate = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ScheduleTableVM(Doctor doc)
         {
-            mycoll = new ObservableCollection<InfoAppoint>();
-            SelectAppoint(doc);
-            addVisit = new RelayCommand(x => markVisit(x));
+            CurrentDate = DateTime.Now.Date;
+            selectDate = CurrentDate.ToString("dd.MM.yyyy");
+            Doc = doc;
+            visibtext = "Hidden";
+            visibList = "Hidden";
+            SelectAppoint(doc,CurrentDate);
+
+            backDay = new RelayCommand(x => GoBack(doc));
+            forwardDay = new RelayCommand(x => GoForward(doc));
         }
-        private void SelectAppoint(Doctor Doctor)
+
+        private void SelectAppoint(Doctor Doctor,DateTime dt)
         {
-            DateTime dt = DateTime.Now.Date;
+            mycoll = new ObservableCollection<InfoAppoint>();
             string connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
             using (SqlConnection connect = new SqlConnection(connectionString))
             {
@@ -85,8 +153,7 @@ namespace RealPolyclinic.ViewModels
                                         checkPatrnomyic.Substring(0,1);
                                 }
                                
-                            }
-                              
+                            }                              
                             mycoll.Add(new InfoAppoint {
                                 Time=reader.GetTimeSpan(3).Hours.ToString()+":00",
                                 Text=FullName,
@@ -99,10 +166,13 @@ namespace RealPolyclinic.ViewModels
                                 }
                             });
                         }
+                        visibtext = "Hidden";
+                        visibList = "Visible";
                     }
                     else
                     {
-                        MessageBox.Show("Пациентов сегодня нет");
+                        visibList = "Hidden";
+                        visibtext = "Visible";
                     }
                 }
                 catch (SqlException ex)
@@ -111,6 +181,7 @@ namespace RealPolyclinic.ViewModels
                 }
 
             }
+
         }
         private void markVisit(object items)
         {
@@ -169,6 +240,18 @@ namespace RealPolyclinic.ViewModels
                 MessageBox.Show("The time has not come yet");
             }
            
+        }
+        private void GoBack(Doctor doc)
+        {
+            CurrentDate = CurrentDate.AddDays(-1);
+            selectDate = CurrentDate.ToString("dd.MM.yyyy");
+            SelectAppoint(doc, CurrentDate);      
+        }
+        private void GoForward(Doctor doc)
+        {
+            CurrentDate = CurrentDate.AddDays(1);
+            selectDate = CurrentDate.ToString("dd.MM.yyyy");
+            SelectAppoint(doc, CurrentDate);          
         }
     }
 }

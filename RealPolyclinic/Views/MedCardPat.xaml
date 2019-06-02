@@ -7,9 +7,63 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel>
-            <Label>Privet</Label>
-            <Label Content="{Binding ThisId}"></Label>
-        </StackPanel>
+        <Border Margin="5 10 5 10" BorderBrush="Black" Background="GhostWhite" BorderThickness="2">
+            <StackPanel Margin="10">
+                <Label>Medical Card</Label>
+
+                <Button IsEnabled="{Binding checkNew}" Content="Add_new" Command="{Binding addDiag}"></Button>
+                <Button IsEnabled="{Binding checkVis}" Content="Add_Mark" Command="{Binding addMark}"/>
+
+                <Label Content="Diagnoses"></Label>
+                <ListView ItemsSource="{Binding Diagnoses}" MaxHeight="150">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="70" DisplayMemberBinding="{Binding Title}">Title</GridViewColumn>
+                            <GridViewColumn Width="120" DisplayMemberBinding="{Binding Description}">
+                                <GridViewColumn.Header>
+                                    <TextBlock Text="Description" ToolTip="{Binding Description}"/>
+                                </GridViewColumn.Header>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Date}">Date</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding NameDoc}">NameDoc</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Label Content="Vaccinations:"></Label>
+                <ListView ItemsSource="{Binding Vaccinations}" MaxHeight="150" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="70" DisplayMemberBinding="{Binding Type}">Type</GridViewColumn>
+                            <GridViewColumn Width="120" DisplayMemberBinding="{Binding Description}">Description</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Date}">Date_Vacc</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Label Content="Surveys:"></Label>
+                <ListView ItemsSource="{Binding Surveys}" MaxHeight="150" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="70" DisplayMemberBinding="{Binding Title}">Title</GridViewColumn>
+                            <GridViewColumn Width="120" DisplayMemberBinding="{Binding Description}">Description</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Date}">Date_Survey</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <Label Content="Analysis:"></Label>
+                <ListView ItemsSource="{Binding Analysis}" MaxHeight="150" >
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Width="70" DisplayMemberBinding="{Binding Type}">Type</GridViewColumn>
+                            <GridViewColumn Width="120" DisplayMemberBinding="{Binding Description}">Description</GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Date}">DateofDelivery</GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

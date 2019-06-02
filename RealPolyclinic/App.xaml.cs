@@ -23,14 +23,8 @@ namespace RealPolyclinic
             base.OnStartup(e);
             //AuthWin = new Authorization() { DataContext = Avm };
             //AuthWin.Show();
-            User ActiveUser = new User()
-            {
-                login = "Petruxa",
-                password = "1389",
-            };
-            DoctorWindowVM dwmv = new DoctorWindowVM(ActiveUser);
-            DoctorWindow dw = new DoctorWindow() { DataContext = dwmv };
-            dw.Show();
+            MainWindow mw = new MainWindow() { DataContext = new MainVM() };
+            mw.Show();
         }
     }
 }
