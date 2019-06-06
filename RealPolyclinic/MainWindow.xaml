@@ -6,6 +6,8 @@
         xmlns:local="clr-namespace:RealPolyclinic"
         xmlns:vm="clr-namespace:RealPolyclinic.ViewModels"
         xmlns:views="clr-namespace:RealPolyclinic.Views"
+        xmlns:converters="clr-namespace:RealPolyclinic.HelpMethods"
+        x:Name="MWindow"
         WindowState="Maximized"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
@@ -22,6 +24,23 @@
         <DataTemplate x:Name="AppointmentViewTemplate" DataType="{x:Type vm:AppointmentVM}">
             <views:MakingAppointment />
         </DataTemplate>
+        <Style x:Key="NewButton" TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="FontSize" Value="14px"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                        <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                        <GradientStop Color="Orange" Offset="0.85"/>
+                        <GradientStop Color="#FFFFD190" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <converters:myConverter x:Key="myConv"/>
     </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -39,13 +58,39 @@
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Row="0" Grid.Column="0" Grid.RowSpan="5" Background="Black">
-            <StackPanel>
-                <Button Command="{Binding gotoAdp}">Add_Patient</Button>
-                <Button Command="{Binding gotoSrch}">Search_Patient</Button>
-                <Button Command="{Binding gotoApp}">Make an appointment</Button>
-            </StackPanel>
+        <Rectangle Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="6" Grid.RowSpan="5">
+            <Rectangle.Fill>
+                <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
+                    <GradientStop Color="#0F2027" Offset="0" />
+                    <GradientStop Color="#203A43" Offset="0.5" />
+                    <GradientStop Color="#2c5364" Offset="1" />
+                </LinearGradientBrush>
+            </Rectangle.Fill>
+        </Rectangle>
+        <Border BorderBrush="WhiteSmoke" BorderThickness="1" Margin="10" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2">
+            <DockPanel>
+                <StackPanel>
+                    <TextBlock Margin="5" HorizontalAlignment="Center" FontFamily="Verdana" FontSize="20" Foreground="WhiteSmoke">Simple Menu</TextBlock>
+                    <Button  Margin="5" Style="{StaticResource NewButton}" Command="{Binding gotoAdp}">Add_Patient</Button>
+                    <Button Margin="5" Style="{StaticResource NewButton}" Command="{Binding gotoSrch}">Search_Patient</Button>
+                    <Button Margin="5" Style="{StaticResource NewButton}" Command="{Binding gotoApp}">Make an appointment</Button>
+                    <Button Content="Exit" Margin="5" Style="{StaticResource NewButton}" Command="{Binding exit}">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                                <GradientStop Color="Red" Offset="0.85"/>
+                                <GradientStop Color="#FFFFD190" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                        <Button.CommandParameter>
+                            <MultiBinding Converter="{StaticResource myConv}">
+                                <Binding  ElementName="MWindow"/>
+                            </MultiBinding>
+                        </Button.CommandParameter>
+                    </Button>
+                </StackPanel>
         </DockPanel>
+        </Border>
         <ContentControl  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="5" Grid.RowSpan="5" Content="{Binding CurrentView}"/>
     </Grid>
 </Window>

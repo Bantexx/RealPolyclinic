@@ -23,6 +23,7 @@ namespace RealPolyclinic.ViewModels
         public ICommand MakeAppoint { get; set; }
         public ICommand DelAppoint { get; set; }
         public string VisibleDel { get; set; }
+        public string visibleRec { get; set; }
         public string NamePat { get; set; }
 
         int _idpat;
@@ -49,11 +50,13 @@ namespace RealPolyclinic.ViewModels
             month = record.Date.Month;
             day = record.Date.Day;
             hour = Convert.ToInt32(record.Time.Substring(0, record.Time.LastIndexOf(':')));
+            visibleRec = "Visibile";
             VisibleDel = "Hidden";
             CurrentDateTime = new DateTime(year, month, day, hour, 0, 0);
             if (record.Text == "Booked")
             {
                 VisibleDel = "Visible";
+                visibleRec = "Hidden";
                 TakeInfoAboutPat();
                 DelAppoint = new RelayCommand(x => DelRecord());
             }           

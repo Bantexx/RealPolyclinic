@@ -21,10 +21,10 @@ namespace RealPolyclinic
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            //AuthWin = new Authorization() { DataContext = Avm };
-            //AuthWin.Show();
-            MainWindow mw = new MainWindow() { DataContext = new MainVM() };
-            mw.Show();
+            AuthWin = new Authorization() { DataContext = Avm };
+            AuthWin.Show();
+            //MainWindow mw = new MainWindow() { DataContext = new MainVM() };
+            //mw.Show();
         }
     }
 }

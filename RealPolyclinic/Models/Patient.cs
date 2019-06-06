@@ -50,7 +50,7 @@ namespace RealPolyclinic.Models
                         }
                         if (SurName.Length < 2 || SurName.Length > 20)
                         {
-                            Error += " Фамилия должно быть больше 1 и меньше 20 символов ";
+                            Error += " Фамилия должна быть больше 1 и меньше 20 символов ";
                         }
                         if (!HelpfulMethods.IsOnlyLetters(SurName))
                         {

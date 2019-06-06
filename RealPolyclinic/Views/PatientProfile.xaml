@@ -12,31 +12,73 @@
         <DataTemplate x:Name="MedCardTemaplate" DataType="{x:Type vm:MedCardVM}">
             <views:MedCard />
         </DataTemplate>
+        <Style x:Key="Labels" TargetType="Label">
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Georgia"/>
+        </Style>
+        <Style x:Key="Textboxes" TargetType="TextBox">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontFamily" Value="Georgia"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
+        <Style x:Key="NewButton" TargetType="Button">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="FontSize" Value="14px"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                        <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                        <GradientStop Color="Orange" Offset="0.85"/>
+                        <GradientStop Color="#FFFFD190" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </UserControl.Resources>
-    <Grid Margin="10">
-        <StackPanel>
+    <Grid>
+        <Border Padding="15" Margin="0 10 5 10" BorderBrush="WhiteSmoke" BorderThickness="1">
             <StackPanel>
-            <Button Content="Go back" Command="{Binding DataContext.PreviousPage,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}" ></Button>
-        </StackPanel>
-            <StackPanel Margin="0 30 0 0">
-                <StackPanel Orientation="Horizontal">
-                    <Label FontSize="14">Имя:</Label>
-                    <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.FirstName}"/>
+                <StackPanel HorizontalAlignment="Left" Width="150">
+                    <Label FontSize="18" HorizontalAlignment="Center" Style="{StaticResource Labels}">Functions</Label>
+                    <Button Margin="0 5 0 8" Style="{StaticResource NewButton}" Content="Go back" Command="{Binding DataContext.PreviousPage,RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window}}" ></Button>
+                    <Button Margin="0 0 0 8" Style="{StaticResource NewButton}" Content="EditProfile" Command="{Binding EdProfile}" CommandParameter="{Binding InfoPat}">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                                <GradientStop Color="#338167" Offset="0.85"/>
+                                <GradientStop Color="#FFFFD190" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
+                    <Button Margin="0 0 0 8" Style="{StaticResource NewButton}" Content="DeleteProfile" Command="{Binding delProfile}">
+                        <Button.Background>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                                <GradientStop Color="Red" Offset="0.85"/>
+                                <GradientStop Color="#FFFFD190" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Button.Background>
+                    </Button>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label FontSize="14">Фамилия:</Label>
-                    <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.SurName}"/>
+                <StackPanel Margin="0 15 0 0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource Labels}">Имя:</Label>
+                        <TextBlock FontSize="16" FontWeight="Medium" Foreground="WhiteSmoke" Margin="0 3 0 0" Text="{Binding InfoPat.FirstName}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource Labels}">Фамилия:</Label>
+                        <TextBlock FontSize="16" FontWeight="Medium" Foreground="WhiteSmoke"  Margin="0 3 0 0"  Text="{Binding InfoPat.SurName}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Style="{StaticResource Labels}" >Отчество:</Label>
+                        <TextBlock FontSize="16" FontWeight="Medium" Foreground="WhiteSmoke"  Margin="0 3 0 0"  Text="{Binding InfoPat.Patronymic}"/>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label FontSize="14">Отчество:</Label>
-                    <TextBlock FontSize="14" Margin="0 5 0 0"  Text="{Binding InfoPat.Patronymic}"/>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Margin="0 10 0 10">
-                <Button Content="EditProfile" Command="{Binding EdProfile}" CommandParameter="{Binding InfoPat}"/>
-                <Button Content="DeleteProfile" Command="{Binding delProfile}"/>
-            </StackPanel>
-            <StackPanel  Margin="0 15 0 0">
+                <StackPanel  Margin="0 15 0 0">
                 <TabControl>
                     <TabItem Header="Personal Info">
                         <StackPanel>
@@ -79,5 +121,6 @@
                 </TabControl>
             </StackPanel>
         </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

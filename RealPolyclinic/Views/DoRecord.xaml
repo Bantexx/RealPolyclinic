@@ -7,7 +7,7 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="DoRecord" Height="400" Width="400">
+        Title="DoRecord" Height="420" Width="400">
     <Window.Resources>
         <ControlTemplate x:Key="validationFailed">
             <StackPanel>
@@ -40,8 +40,24 @@
             <TextBox Height="35" FontSize="25"  IsReadOnly="True" Text="{Binding record.Doc.FullName}"></TextBox>
             <Label FontSize="16" Margin="0 0 0 5" Content="Date"></Label>
             <TextBox Height="35" FontSize="25"  IsReadOnly="True" Text="{Binding showDate}"></TextBox>
-            <Button Margin="0 10 0 10" Content="Record" Command="{Binding MakeAppoint}"></Button>
-            <Button Visibility="{Binding VisibleDel}" Content="Del Record" Command="{Binding DelAppoint}"></Button>
+            <Button Visibility="{Binding visibleRec}" Height="26" Margin="0 10 0 10" Content="Record" Command="{Binding MakeAppoint}">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                        <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                        <GradientStop Color="Orange" Offset="0.85"/>
+                        <GradientStop Color="#FFFFD190" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
+            <Button Height="26" Visibility="{Binding VisibleDel}" Content="Del Record" Command="{Binding DelAppoint}">
+                <Button.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                        <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                        <GradientStop Color="Red" Offset="0.85"/>
+                        <GradientStop Color="#FFFFD190" Offset="1"/>
+                    </LinearGradientBrush>
+                </Button.Background>
+            </Button>
         </StackPanel>
     </Grid>
 </Window>

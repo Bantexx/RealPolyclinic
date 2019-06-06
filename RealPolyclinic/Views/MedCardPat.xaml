@@ -6,15 +6,46 @@
              xmlns:local="clr-namespace:RealPolyclinic.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Key="NewButton" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="Content" Value="Add_Mark">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                                <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                                <GradientStop Color="#d6ce16" Offset="0.75"/>
+                                <GradientStop Color="#FFFFD190" Offset="1"/>
+                            </LinearGradientBrush>
+                        </Setter.Value>
+                    </Setter>
+                </Trigger>
+            </Style.Triggers>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="2"/>
+            <Setter Property="FontFamily" Value="Verdana"/>
+            <Setter Property="FontSize" Value="14px"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="Background" >
+                <Setter.Value>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                        <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                        <GradientStop Color="#30a53d" Offset="0.75"/>
+                        <GradientStop Color="#FFFFD190" Offset="1"/>
+                    </LinearGradientBrush>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
     <Grid>
-        <Border Margin="5 10 5 10" BorderBrush="Black" Background="GhostWhite" BorderThickness="2">
+        <Border Margin="5 10 5 10" BorderBrush="Black" Background="GhostWhite" BorderThickness="1">
             <StackPanel Margin="10">
-                <Label>Medical Card</Label>
+                <Label FontSize="16" FontWeight="Bold" FontFamily="Georgia" >Medical Card</Label>
 
-                <Button IsEnabled="{Binding checkNew}" Content="Add_new" Command="{Binding addDiag}"></Button>
-                <Button IsEnabled="{Binding checkVis}" Content="Add_Mark" Command="{Binding addMark}"/>
+                <Button Style="{StaticResource NewButton}" IsEnabled="{Binding checkNew}" Content="Add_new" Command="{Binding addDiag}"></Button>
+                <Button Style="{StaticResource NewButton}" IsEnabled="{Binding checkVis}" Content="Add_Mark" Command="{Binding addMark}"/>
 
-                <Label Content="Diagnoses"></Label>
+                <Label FontSize="16" FontWeight="Bold" FontFamily="Georgia"  Content="Diagnoses"></Label>
                 <ListView ItemsSource="{Binding Diagnoses}" MaxHeight="150">
                     <ListView.View>
                         <GridView>
@@ -30,7 +61,7 @@
                     </ListView.View>
                 </ListView>
 
-                <Label Content="Vaccinations:"></Label>
+                <Label FontSize="16" FontWeight="Bold" FontFamily="Georgia"  Content="Vaccinations:"></Label>
                 <ListView ItemsSource="{Binding Vaccinations}" MaxHeight="150" >
                     <ListView.View>
                         <GridView>
@@ -41,7 +72,7 @@
                     </ListView.View>
                 </ListView>
 
-                <Label Content="Surveys:"></Label>
+                <Label FontSize="16" FontWeight="Bold" FontFamily="Georgia"  Content="Surveys:"></Label>
                 <ListView ItemsSource="{Binding Surveys}" MaxHeight="150" >
                     <ListView.View>
                         <GridView>
@@ -52,7 +83,7 @@
                     </ListView.View>
                 </ListView>
 
-                <Label Content="Analysis:"></Label>
+                <Label FontSize="16" FontWeight="Bold" FontFamily="Georgia" Content="Analysis:"></Label>
                 <ListView ItemsSource="{Binding Analysis}" MaxHeight="150" >
                     <ListView.View>
                         <GridView>

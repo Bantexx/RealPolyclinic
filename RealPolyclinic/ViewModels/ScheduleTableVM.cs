@@ -117,6 +117,7 @@ namespace RealPolyclinic.ViewModels
 
         private void SelectAppoint(Doctor Doctor,DateTime dt)
         {
+            List<InfoAppoint> mylst = new List<InfoAppoint>();
             mycoll = new ObservableCollection<InfoAppoint>();
             string connectionString = ConfigurationManager.ConnectionStrings["ConnectToDb"].ConnectionString;
             using (SqlConnection connect = new SqlConnection(connectionString))
@@ -181,6 +182,7 @@ namespace RealPolyclinic.ViewModels
                 }
 
             }
+           //mycoll = mycoll.OrderBy(x => Convert.ToDateTime(x.Time));
 
         }
         private void markVisit(object items)

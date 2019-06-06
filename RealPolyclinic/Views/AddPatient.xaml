@@ -13,17 +13,28 @@
     <UserControl.Resources>
         <ControlTemplate x:Key="validationFailed">
             <StackPanel>
-                <Border BorderBrush="Red" BorderThickness="2">
+                <Border BorderBrush="Orange" BorderThickness="1">
                     <AdornedElementPlaceholder />
                 </Border>
-                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Red" FontSize="16" FontWeight="Light">!</TextBlock>
+                <TextBlock TextAlignment="Right" Text="{Binding [0].ErrorContent}" Foreground="Orange" FontSize="16" FontWeight="Medium">!</TextBlock>
             </StackPanel>
         </ControlTemplate>
+        <Style x:Key="Labels" TargetType="Label">
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="FontFamily" Value="Georgia"/>
+        </Style>
+        <Style x:Key="Textboxes" TargetType="TextBox">
+            <Setter Property="FontSize" Value="22"/>
+            <Setter Property="FontFamily" Value="Georgia"/>
+            <Setter Property="Height" Value="30"/>
+        </Style>
     </UserControl.Resources>
     <Grid>
-        <StackPanel Margin="20 0 20 0">
-            <Label Content="Имя:"/>
-            <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
+        <Border Padding="15" Margin="0 10 5 10" BorderBrush="WhiteSmoke" BorderThickness="1">
+            <StackPanel Margin="20 0 20 0">
+            <Label Style="{StaticResource Labels}" Content="Имя:"/>
+                <TextBox Style="{StaticResource Textboxes}"  Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <TextBox.Text>
                     <Binding Path="SelectedPatient.FirstName" Mode="TwoWay" 
                              ValidatesOnExceptions="True" 
@@ -34,7 +45,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <Label Content="Фамилия:" />
+                <Label  Style="{StaticResource Labels}" Content="Фамилия:" />
             <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <TextBox.Text>
                     <Binding Path="SelectedPatient.SurName" Mode="TwoWay" 
@@ -46,7 +57,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <Label Content="Отчество:"/>
+                <Label Style="{StaticResource Labels}"  Content="Отчество:"/>
             <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <TextBox.Text>
                     <Binding Path="SelectedPatient.Patronymic" Mode="TwoWay" 
@@ -58,7 +69,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <Label Content="Снилс:"/>
+                <Label Style="{StaticResource Labels}"  Content="Снилс:"/>
             <xctk:MaskedTextBox Height="35" FontSize="25" Mask="000-000-000 00" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <xctk:MaskedTextBox.Text>
                     <Binding Path="SelectedPatient.Snils" Mode="TwoWay" 
@@ -70,7 +81,7 @@
                     </Binding>
                 </xctk:MaskedTextBox.Text>
             </xctk:MaskedTextBox>
-            <Label Content="Телефон:"/>
+                <Label Style="{StaticResource Labels}"  Content="Телефон:"/>
             <xctk:MaskedTextBox Height="35" FontSize="25" Mask="0-(000)-000-00-00" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <xctk:MaskedTextBox.Text>
                     <Binding Path="SelectedPatient.Telephone" Mode="TwoWay" 
@@ -82,7 +93,7 @@
                     </Binding>
                 </xctk:MaskedTextBox.Text>
             </xctk:MaskedTextBox>
-            <Label Content="Полис:"/>
+                <Label Style="{StaticResource Labels}"  Content="Полис:"/>
             <xctk:MaskedTextBox Height="35" FontSize="25" Mask="0000 0000 0000 0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <xctk:MaskedTextBox.Text>
                     <Binding Path="SelectedPatient.Policy" Mode="TwoWay" 
@@ -94,7 +105,7 @@
                     </Binding>
                 </xctk:MaskedTextBox.Text>
             </xctk:MaskedTextBox>
-            <Label Content="Адрес:"/>
+                <Label Style="{StaticResource Labels}"  Content="Адрес:"/>
             <TextBox Height="35" FontSize="25" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <TextBox.Text>
                     <Binding Path="SelectedPatient.Address" Mode="TwoWay" 
@@ -106,7 +117,7 @@
                     </Binding>
                 </TextBox.Text>
             </TextBox>
-            <Label Content="Дата рождения:"/>
+                <Label Style="{StaticResource Labels}"  Content="Дата рождения:"/>
             <xctk:MaskedTextBox Height="35" FontSize="25" Mask="00/00/0000" Validation.ErrorTemplate="{StaticResource validationFailed}">
                 <xctk:MaskedTextBox.Text>
                     <Binding Path="SelectedPatient.Birthday" Mode="TwoWay" 
@@ -118,7 +129,16 @@
                     </Binding>
                 </xctk:MaskedTextBox.Text>
             </xctk:MaskedTextBox>
-            <Button Height="30" Margin="0 30 0 0" Content="Send Data" Command="{Binding addNew}"/>
-        </StackPanel>
+                <Button Height="30" Margin="0 30 0 0" Content="Send Data" Command="{Binding addNew}">
+                    <Button.Background>
+                        <LinearGradientBrush StartPoint="0,0" EndPoint="0,1" >
+                            <GradientStop Color="#FFFFD190" Offset="0.2"/>
+                            <GradientStop Color="#338167" Offset="0.75"/>
+                            <GradientStop Color="#FFFFD190" Offset="1"/>
+                        </LinearGradientBrush>
+                    </Button.Background>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

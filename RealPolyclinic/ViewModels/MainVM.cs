@@ -1,5 +1,6 @@
 ﻿using RealPolyclinic.HelpMethods;
 using RealPolyclinic.Models;
+using RealPolyclinic.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -41,6 +42,7 @@ namespace RealPolyclinic.ViewModels
         public ICommand GoToPat { get; set; }
         public ICommand PreviousPage { get; set; }
         public ICommand gotoApp { get; set; }
+        public ICommand exit { get; set; }
 
         public MainVM()
         {
@@ -49,6 +51,15 @@ namespace RealPolyclinic.ViewModels
             GoToPat = new RelayCommand(x => { CurrentView = new PatientProfileVM(Convert.ToInt32(x)); previousView = new SearchPatientVM(); }, x => HelpfulMethods.Checkdata(x));
             PreviousPage = new RelayCommand(x => CurrentView = previousView);
             gotoApp = new RelayCommand(x => CurrentView = new AppointmentVM());
+            exit = new RelayCommand(x => ExitWindow(x));
+        }
+        private void ExitWindow(object items)
+        {
+            object[] parameters = items as object[];
+            var currentWind = parameters[0] as Window;
+            Authorization auth = new Authorization() { DataContext = new AuthorizationVM() };
+            auth.Show();
+            currentWind.Close();
         }
     }
 }
